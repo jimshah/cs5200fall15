@@ -1,0 +1,126 @@
+﻿@media screen {
+
+    @media screen and (min-width: 920px) {
+        body {
+            width: auto;
+        }
+    }
+
+    @media screen and (max-width: 919px) {
+        body {
+            max-width: 100%;
+        }
+    }
+
+    .main_div {
+        padding: 2%;
+        background-color: ghostwhite;
+        border: 5px solid black;
+    }
+}
+
+.main_div {
+     padding: 2%;
+     background-color: ghostwhite;
+     border: 5px solid black;
+}
+
+.main_header {
+    border: 1px solid black;
+    margin-left:auto;
+    margin-right:auto;
+    width:85%;
+    height: auto;
+    margin-bottom:1%;
+    background-color:black;
+    overflow:hidden;
+    -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 1);
+    -moz-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 1);
+    box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 1);
+}
+
+#heading {
+    margin-bottom:1%;
+    font-family:MyriadPro;
+    color:white;
+    text-align:center;
+    font-size:xx-large;
+}
+
+#tagline {
+    margin-bottom:1%;
+    font-family:MyriadPro;
+    color:white;
+    text-align:center;
+    font-size:130%;
+   
+}
+
+.contents {
+    margin-left:auto;
+    margin-right:auto;
+    width:85%;
+    height: auto;
+    margin-bottom:1%;
+    background-color:black;
+    -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 1);
+    -moz-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 1);
+    box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 1);
+}
+
+.contents_wrapper {
+    padding:2%;
+}
+
+.sub_heading {
+    color:#f5de50;
+    font-family:Arial;
+    font-size:x-large;
+    text-decoration:underline;
+}
+
+.center_heading {
+    color:#f5de50;
+    font-family:Arial;
+    font-size:xx-large;
+    text-decoration:underline;
+    text-align:center;
+}
+
+.normal_text {
+    color:white;
+    font-family:Arial;
+    font-size:108%;
+    text-align:justify;
+    margin-top:0.5%;
+}
+
+    .normal_text a {
+        text-decoration:none;
+        color:#f5de50;
+        text-decoration:underline;
+    }
+
+.small_heading {
+    color:#f5de50;
+    font-family:Arial;
+    font-size:large;
+    margin-bottom:1px;
+}
+
+.footer {
+    border: 1px double black;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:0;
+    width:85%;
+}
+
+#footer_text {
+    text-align:center;
+    color:black;
+    font-family:Arial;
+    font-size:120%;
+    margin-top:0.8%;
+    margin-bottom:0.8%;
+}
