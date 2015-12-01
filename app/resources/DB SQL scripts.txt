@@ -1,0 +1,173 @@
+select * from movies;
+
+insert into movies values (
+5,
+'Four Rooms',
+'Comedy',
+'Its Ted the Bellhops first night on the job...and the hotels very unusual guests are about to place him in some outrageous predicaments. It seems that this evenings room service is serving up one unbelievable happening after another.',
+0.735,
+'/eQs5hh9rxrk1m4xHsIz1w11Ngqb.jpg',
+'en',
+'19951225',
+98,
+'Released',
+'Twelve outrageous guests. Four scandalous requests. And one lone bellhop, in his first day on the job, whos in for the wildest New years Eve of his life.'
+);
+
+create table movies (
+    id int primary key,
+    title varchar(100) not null unique,
+    genre varchar(100) not null,
+    overview varchar(8000),
+    popularity double,
+    poster_path varchar(100),
+    movie_lang varchar(10),
+    release_date date not null,
+    runtime double,
+    status varchar(20),
+    tagline varchar(500)
+);
+
+create table theatre (
+    id int primary key,
+    title varchar(100) not null unique,
+    overview varchar(8000),
+    popularity double,
+    poster_path varchar(100),
+    release_date date not null
+);
+
+create table popular (
+    id int primary key,
+    title varchar(100) not null unique,
+    overview varchar(8000),
+    popularity double,
+    poster_path varchar(100),
+    release_date date not null
+);
+
+create table Upcoming (
+    id int primary key,
+    title varchar(100) not null unique,
+    overview varchar(8000),
+    popularity double,
+    poster_path varchar(100),
+    release_date date not null
+);
+
+#person is a generalized class of actor, director and producer
+ create table person (
+	id int primary key,
+    birthday date,
+    homepage varchar(200) not null,
+    profile_path varchar(200) not null,
+    place_of_birth varchar(200) not null
+ );
+
+create table actor (
+ person_id int primary key,
+ name varchar(50) not null unique,
+ foreign key(person_id) references person(id)
+ );
+ 
+ 
+create table director (
+ person_id int primary key,
+ name varchar(50) not null unique,
+ foreign key(person_id) references person(id)
+ );
+ 
+ create table producer (
+ person_id int,
+ name varchar(50) not null,
+ foreign key (person_id) references person(id)
+ );
+ 
+ create table cast (
+	cast_id int,
+	name varchar(255) not null,
+	char_potrayed varchar(255) not null,
+    credit_id varchar(255),
+    person_id int,
+	foreign key(person_id) references person(id),
+	movie_id int,
+	foreign key(movie_id) references movies(id),
+    profile_path varchar(255),
+	primary key(movie_id, cast_id)
+);
+
+create table crew (
+    credit_id varchar(255),
+	department varchar(255) not null,
+    person_id int,
+	foreign key(person_id) references person(id),
+	job varchar(255) not null,
+	name varchar(255) not null,
+	movie_id int,
+	foreign key(movie_id) references movies(id),
+    profile_path varchar(255),
+	primary key(movie_id, person_id, job)
+);
+
+ 
+ create table MovieActor (
+ movie_id int,
+ foreign key(movie_id) references movies(id) on delete cascade on update cascade,
+ actor_id int,
+ foreign key(actor_id) references actor(person_id) on delete cascade on update cascade
+ );
+ 
+ create table MovieDirector (
+ movie_id int,
+ foreign key(movie_id) references movies(id) on delete cascade on update cascade,
+ director_id int,
+ foreign key(director_id) references director(person_id) on delete cascade on update cascade
+ );
+ 
+ create table MovieProducer (
+ movie_id int,
+ foreign key(movie_id) references movies(id) on delete cascade on update cascade,
+ producer_id int,
+ foreign key(producer_id) references producer(person_id) on delete cascade on update cascade
+ );
+ 
+#user is a generalized class of two types of users - registeredUser and systemAdmin
+create table user(
+	id int primary key,
+    name varchar(200) not null,
+    email varchar(200) not null unique,
+    username varchar (200) not null unique,
+    password varchar (200) not null
+);
+
+create table registeredUser(
+	user_id int,
+    foreign key (user_id) references user(id),
+    registrationNumber double
+);
+
+create table systemAdmin(
+	user_id int,
+    foreign key (user_id) references user(id),
+    adminNumber double
+);
+
+
+#association table that lists which movies have been favorited by which users
+create table user_movie_favs (
+	movie_id int,
+    foreign key (movie_id) references movies(id),
+    user_id int,
+    foreign key (user_id) references user(id)
+);
+
+#table that stores at most three movie reviews, movie rating and the ID of users who reviewed them 
+create table movie_reviews(
+id int primary key,
+movie_id int,
+foreign key (movie_id) references movies(id),
+review varchar(500),
+user_id int,
+foreign key (user_id) references user(id)
+);
+ 

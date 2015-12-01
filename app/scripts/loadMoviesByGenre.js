@@ -77,20 +77,22 @@ function getRequest(options){
 	};
 };
 
-getMovieByGenre(28)
+getMovieByGenre(37)
 .map(function(movie, index){
 	var query = "insert into movies (id, title, genre, overview, popularity, poster_path, movie_lang, release_date) values(" + movie.id + ',"' + movie.title + '","' + movie.genre + '","' + movie.overview + '",' + movie.popularity + ',"' + movie.poster_path + '","' + movie.movie_lang + '","' + movie.release_date + '")';
 	console.log("query is \n", query);
 	mysql.query(query,function(err, rows, fields) {
 		if (err) {
-			console.log("err", err);
-			return Promise.reject(err);
+			//console.log("err", err);
+			return Promise.resolve(err);
 		} else {
 			console.log(movie.title + " added successfully");
+			return Promise.resolve(movie.title);
 		}
 	});
 })
-.then(function(){
+.then(function(result){
+	console.log(result);
 	console.log("Done");
 })
 .catch(function(error){
