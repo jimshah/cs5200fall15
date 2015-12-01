@@ -1,0 +1,24 @@
+1) Default.html
+In theatres : "http://api.themoviedb.org/3/movie/now_playing?api_key=" + apikey,
+Popular : "http://api.themoviedb.org/3/movie/popular?api_key=" + apikey,
+Coming soon : "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey,
+
+2) OnDVD.html
+Top Rentals : "http://api.themoviedb.org/3/movie/top_rated?api_key=" + apikey,
+Current Releases : "http://api.themoviedb.org/3/movie/now_playing?api_key=" + apikey, (same as Intheatres)
+New Releases : "http://api.themoviedb.org/3/movie/popular?api_key=" + apikey, (same as Popular)
+Upcoming : "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey, (same as Coming soon)
+
+3) Search.html
+Search : "http://api.themoviedb.org/3/search/movie?api_key="+ apikey + "&query=" + query,
+
+4) Movie Information
+
+Movie Details : "http://api.themoviedb.org/3/movie/" + movie_id +"?api_key=" + apikey,
+Cast : "http://api.themoviedb.org/3/movie/" + movie_id +"/credits?api_key=" + apikey,
+Censor Rating : "http://api.themoviedb.org/3/movie/" + movie_id +"/releases?api_key=" + apikey,
+Review : "http://api.themoviedb.org/3/movie/" + movie_id +"/reviews?api_key=" + apikey,
+Similar : "http://api.themoviedb.org/3/movie/" + movie_id +"/similar?api_key=" + apikey,
+
+5) Person Information
+Person Details : "http://api.themoviedb.org/3/person/" + person_id +"?api_key=" + apikey,

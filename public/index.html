@@ -1,49 +1,202 @@
+﻿<!DOCTYPE html>
 
-<!DOCTYPE html>
-<html lang="en" ng-app="MovieCentral">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="DB CS5200 Fall15 Final Project">
-  <meta name="author" content="Jainam Shah">
-  <title>Moviecentral..!!</title>
+    <title>MovieCentral</title>
+    <link rel="stylesheet" type="text/css" href="../project_css/homestyle.css" />
 
-  <!--<link rel="icon" href="../../favicon.ico">-->
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <!-- Loading Custom CSS files here -->
+    <meta charset="utf-8" />
 
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
-  <!-- Angular from CDN-->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+    <script type="text/javascript">
 
-  <!-- Loading Custom JS files -->
-  <script src="app.js"></script>
-  <script src="config.js"></script>
+        //var apikey = "33j424u44fyb857r2abt3938";
+        //var apikey = "rt5uje92yr38pjvzkt3vxnfz";
+		var apikey = "6979561fa2d69d55e0124e37c663304d";
+       
+        // calls all the functions in the order written below
+        onload = function loadImages() {
+            loadInTheatresMovies();
+            loadPopularMovies();
+            loadComingSoonMovies();
+        }
+
+        function loadInTheatresMovies() {
+
+            $.ajax({
+                //The API call
+				url: "http://api.themoviedb.org/3/movie/now_playing?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+
+                    //Storing the data in a variable
+                    var movies = response.results;
+                    var imagesofintheatres = $(".intheatres");
+                    imagesofintheatres.empty();
+
+                    //Taking the first 5 movies from the data
+                    for (var i = 0; i < 5; i++) {
+                        var movie = movies[i];
+                        
+                        //Parsing the data
+                        var space = " ";
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var title = movie.title;
+						var base_url = "http://image.tmdb.org/t/p/w300";
+
+                        //Encapsulating the data to display
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+
+                        //Displaying the data
+                        imagesofintheatres.append(display_image);
+                        imagesofintheatres.append(space);
+                    }
+                }
+            });
+        }
+
+        function loadPopularMovies() {
+
+            $.ajax({
+				url: "http://api.themoviedb.org/3/movie/popular?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+                    var movies = response.results;
+                    var imagesofpopularmovies = $(".displaypopular");
+                    imagesofpopularmovies.empty();
+                    for (var i = 0; i < 5; i++) {
+                        var movie = movies[i];
+                      
+                        var space = " ";
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var title = movie.title;
+						var base_url = "http://image.tmdb.org/t/p/w300";
+						
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+
+                        imagesofpopularmovies.append(display_image);
+                        imagesofpopularmovies.append(space);
+                    }
+                }
+            });
+        }
+
+        function loadComingSoonMovies() {
+
+            $.ajax({
+				url: "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+                    var movies = response.results;
+                    var imagesofupcomingmovies = $(".comingsoon");
+                    imagesofupcomingmovies.empty();
+					
+                    for (var i = 0; i < 5; i++) {
+                        var movie = movies[i];
+                      
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var space = " ";
+                        var title = movie.title;
+						var base_url = "http://image.tmdb.org/t/p/w300";
+						
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                       
+                        imagesofupcomingmovies.append(display_image);
+                        imagesofupcomingmovies.append(space);
+
+                    }
+                }
+            });
+        }
+
+        </script>
 
 </head>
 
-<body class="scramble-body">
-  <!-- <header ng-include="'/widgets/scramble/views/header/header.view.html'"></header> -->
-  <h1>Hello..!!</h1>
-  <h2>This is a sample page.</h2>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3">
+<body>
+    <form id="form1" runat="server">
+
+    </form>
+
+    <div class="main_div">
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+            </div>
+        </div>
         
-      </div>
-      <div class="col-sm-9">
-        <div ng-view></div>
-      </div>
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a target="_blank" href="../../story/index.htm?../Project/Documentation/story.txt">Documentation</a></li>
+                </ul>
+            </div>
+
+        <div class="in_theatres">
+            <h3>In Theatres: &nbsp;&nbsp;
+               <a href="Intheatres.html" target="_blank">(See All)</a>
+                
+            </h3>
+            <div class="intheatres">
+                <!--The area where movie in theaters are displayed-->
+            </div>
+
+        </div>
+
+        <div class="Popular_Movies">
+            <h3>Popular Movies:&nbsp;&nbsp;
+               <a href="PopularMovies.html" target="_blank">(See All)</a> </h3>
+            <div class="displaypopular">
+                <!--The area where popular movies are displayed-->
+            </div>
+        </div>
+
+        <div class="Coming_Soon">
+            <h3>Coming Soon:&nbsp;&nbsp;
+               <a href="Comingsoon.html" target="_blank">(See All)</a> </h3>
+            <div class="comingsoon">
+                <!--The area where upcoming movies are displayed-->
+            </div>
+        </div>
+
+        <div class="footer">
+                <p id="footer_text">
+                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                </p>
+            </div>
+
     </div>
-  </div>
-  <!-- Bootstrap core JavaScript -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <!-- <script src="http://maps.googleapis.com/maps/api/js"></script> -->
+    
 </body>
 </html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<html>
+<head>
+    <title>MovieCentral</title>
+    <link rel="stylesheet" type="text/css" href="../project_css/Register.css" />
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script type="text/javaScript">
+		
+		function validateForm() {
+
+            //First name validation
+            var y = document.getElementById("abc").value;
+			
+            if (!y) {
+                alert("Full name must be filled out");
+                return false;
+            }
+
+            var re = /^[A-Za-z]+$/;
+
+            if (!(re.test(y))) {
+                alert('Invalid Full Name.');
+                return false;
+            }
+			
+
+            //User Id validation
+            var a = document.getElementById("Username").value;
+			console.log(a);
+            if (!a) {
+                alert("Login Id must be filled out");
+                return false;
+            }
+            var minLength = 6;
+            if (a.length < minLength) {
+                alert('Your Login Id must be at least ' + minLength + ' characters long. Try again.');
+                return false;
+            }
+
+            //Password validation
+            var invalid = " ";
+
+            var pw1 = document.getElementById("pos1").value;
+			console.log(pw1);
+            if (!pw1) {
+                alert('Please enter your password.');
+                return false;
+            }
+            if (pw1.length < minLength) {
+                alert('Your password must be at least ' + minLength + ' characters long. Try again.');
+                return false;
+            }
+            if (pw1.indexOf(invalid) > -1) {
+                alert("Sorry, spaces are not allowed in password.");
+                return false;
+            }
+
+            //Confirm Password Vaidation
+
+            var pw2 = document.getElementById("cpwd").value;
+			console.log(pw2);
+            if (pw1 != pw2) {
+                alert('The password does not match. Try again')
+                return false;
+            }
+			
+			var email = document.getElementById("email").value;
+            if (!email) {
+                alert('Please enter your EmailID.');
+                return false;
+            }
+			
+			var userRegistrationObject = {
+				"email": email,
+				"name": y,
+				"Username": a,
+				"Password": pw1,
+			};
+			
+			$.ajax({
+                //Making the API call
+				url: "/db/user/register",
+				type: "POST",
+				dataType:"json",
+                data: userRegistrationObject,
+                success: function (response) {},
+				
+				error: function(err){ 
+                        alert(err); 
+                } 
+			});
+
+        }
+		
+	</script>
+
+</head>
+
+<body>
+
+    <div class="main_div">
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+            </div>
+        </div>
+        
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a target="_blank" href="Register.html">Register</a></li>
+                </ul>
+            </div>
+
+        <div class="in_theatres">
+            <h3>REGISTER : &nbsp;&nbsp;
+               <a href="login.html">(Already a Member?)</a> 
+            </h3>
+            <div class="intheatres">
+			
+				<form name="form1">
+				
+					&nbsp;
+					<strong>Full Name:</strong>&nbsp; <input id="abc" type="text" placeholder="Your Full Name"/> <br/><br/>		
+
+					<strong>User Name:</strong>&nbsp;<input id="Username" type="text" name="Username" placeholder="Your User Name"/><br/><br/>
+
+					&nbsp;
+					<strong class="pos">Password:</strong>&nbsp;<input type="password" name="Password" placeholder="Password" id="pos1"/><br/><br/>
+
+					&nbsp&nbsp&nbsp;
+					<strong class="long">Confirm:</strong>&nbsp;<input id="cpwd" type="password" name="Password1" placeholder="Confirm Password"/><br/><br/>
+
+					&nbsp&nbsp&nbsp;
+					<strong>Email Id:</strong>&nbsp;<input id="email" type="email" name="EmailId" placeholder="Email ID"/><br/><br/>
+
+					<button onclick="return validateForm()">Submit</button> <br/><br/>
+
+				</form>
+			
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p id="footer_text">
+                Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+            </p>
+        </div>
+
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Movie Details</title>
+    <link rel="stylesheet" type="text/css" href="../project_css/MovieInformation.css" />
+
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'/>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+		var apikey = "6979561fa2d69d55e0124e37c663304d";
+
+        //Calls the function on loading the page
+        onload = function onpageload() {
+            //Extracts the movie id from the url using regular expressions
+            var url = document.URL;
+            var id_check = /[?&]id=([^&]+)/i;
+            var match = id_check.exec(url);
+            if (match != null) {
+                person_id = match[1];
+            } else {
+                person_id = "";
+            }
+
+        $("#contents").empty();
+        $("#table").empty();
+        //$("#castinfo").empty();
+        $.ajax({
+            //The API call for movie information
+			url: "http://api.themoviedb.org/3/person/" + person_id +"?api_key=" + apikey,
+            dataType: "jsonp",
+			
+            success: function (response) {
+                console.log(response);
+                var name = response.name;
+                var image_path = response.profile_path;
+				var base_url = "http://image.tmdb.org/t/p/w300";
+
+                var display_image = "<img src=" + base_url + image_path + " style='width:77%;'" +" title ='" + name + "' alt ='" + name + "' hspace= 20>";
+
+                // displaying the movie image
+                $("#movie_image").append(display_image);
+
+                //$("#seesimilarmovies").append("<p>Scroll down to see Similar Movies<br></p>");
+
+                //Parsing the data
+                var dob = response.birthday;
+                if (dob == "")
+                { dob = "Not Available"; }
+
+                var placeofbirth = response.place_of_birth;
+                if (placeofbirth === "" || placeofbirth === null)
+                { placeofbirth = "Not Available"; }
+
+                var popularity = response.popularity;
+                if (popularity == "")
+                { popularity = "Not Available"; }
+
+                var homepage = response.homepage;
+                if (homepage == "")
+                { homepage = "Not Available"; }
+
+                var biography = response.biography;
+                if (biography == "")
+                { biography = "Not Available"; }
+
+                //Appending the variables to display in one variable
+                var specificmoviedetails = "<p class='specificmovieinfotitle'>Name: </p><p class='specificmovieinfocontents'>" + name + "</p><br>" +
+                                           "<p class='specificmovieinfotitle'>BirthPlace: </p><p class='specificmovieinfocontents'>" + placeofbirth + "</p><br>" +
+                                           "<p class='specificmovieinfotitle'>Date Of Birth: </p><p class='specificmovieinfocontents'>" + dob + "</p><br/>" +
+                                           "<p class='specificmovieinfotitle'>Popularity: </p><p class='specificmovieinfocontents'>" + popularity + "</p><br/>" +
+										   "<p class='specificmovieinfotitle'>HomePage: </p><p class='specificmovieinfocontents'>" + homepage + "</p><br/>" +
+                                           "<p class='specificmovieinfotitle'>Biography: </p><p class='specificmovieinfocontents'>" + biography + " </p><br>";
+                ;
+
+                //Displaying the data
+                $("#contents").append(specificmoviedetails);
+            },
+                
+                error: function (error) {
+                    alert("Error");
+                }
+        });
+        }
+
+      </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+      <div class="main_div">
+
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+            </div>
+        </div>
+      
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a href="../../story/index.htm?../Project/Documentation/story.txt" target="_blank">Documentation</a></li>
+                </ul>
+         </div>
+
+          <div class="MovieDetails">
+             <div class="MovieDetailsWrapper">
+                 <h3>Movie Details:</h3>
+                 <div class="MovieImageWrapper">
+                  <!--the movie image is displayed here-->
+                    <div class="imagecontents" id="movie_image">
+                    </div>
+                    <br />
+              </div>
+              <div class="MovieContents" id="contents">
+                  <!--The movie information is displayed in this area-->
+              </div>
+            </div>
+          </div>
+        
+          <div class="footer">
+                <p id="footer_text">
+                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                </p>
+            </div>
+        
+    
+    </div>
+    </form>
+</body>
+</html>

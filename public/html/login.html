@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>MovieCentral</title>
+    <link rel="stylesheet" type="text/css" href="../project_css/login.css" />
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+		var apikey = "6979561fa2d69d55e0124e37c663304d";
+		
+		function validateForm() {
+
+            //First name validation
+            var y = document.getElementById("abc").value;
+			
+            if (!y) {
+                alert("Full name must be filled out");
+                return false;
+            }
+
+            var re = /^[A-Za-z]+$/;
+
+            if (!(re.test(y))) {
+                alert('Invalid Full Name.');
+                return false;
+            }
+			
+			//Password validation
+            var invalid = " ";
+
+            var pw1 = document.getElementById("pwd").value;
+			console.log(pw1);
+            if (!pw1) {
+                alert('Please enter your password.');
+                return false;
+            }
+            if (pw1.length < minLength) {
+                alert('Your password must be at least ' + minLength + ' characters long. Try again.');
+                return false;
+            }
+            if (pw1.indexOf(invalid) > -1) {
+                alert("Sorry, spaces are not allowed in password.");
+                return false;
+            }
+			
+			var JsonLoginObject = {
+				"Username" : y,
+				"Password" : pw1,
+			}
+			
+			$.ajax({
+                //Making the API call
+				url: "/db/user/login",
+				type: "POST",
+				dataType:"json",
+                data: JsonLoginObject,
+                success: function (response) {},
+				
+				error: function(err){ 
+                        alert(err); 
+                } 
+			});
+		}
+		
+	</script>
+
+</head>
+
+<body>
+
+    <div class="main_div">
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+            </div>
+        </div>
+        
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a target="_blank" href="Register.html">Register</a></li>
+                </ul>
+            </div>
+
+        <div class="in_theatres">
+            <h3>LOGIN : &nbsp;&nbsp;
+               <a href="Register.html">(New User?)</a> 
+            </h3>
+            <div class="intheatres">
+			
+				<form name="form1">
+					<strong>User Name:</strong>&nbsp; <input id="abc" type="text" name="UserName" placeholder="Your User Name"/> <br/><br/>
+					&nbsp&nbsp;
+					<strong class="pos">Password:</strong>&nbsp;<input id="pwd" type="password" name="Password" placeholder="Password"/> <br/><br/>
+					<button onclick="return validateForm()">Submit</button> <br/><br/><br/>
+				</form>
+			
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p id="footer_text">
+                Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+            </p>
+        </div>
+
+    </div>
+    
+</body>
+</html>

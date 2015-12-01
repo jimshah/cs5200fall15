@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Search Movies</title>
+
+    <link rel="stylesheet" type="text/css" href="../project_css/Search.css" />
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script>
+        
+        $(function () {
+            //On clicking the search button the function Search Movies is called
+            $(".luck").click(searchMovies);
+        });
+
+        $(function () {
+            //On pressing enter the function searchMovies is called
+            $('#usersSearch').keypress(function (e) {
+                if (e.which == 13) {//Enter key pressed
+                    searchMovies();//Trigger search button click event
+                }
+            });
+        });
+
+        
+
+        function searchMovies() {
+            //Storing the value of the textbox
+            var query = $(".moviename").val();
+			
+			var apikey = "6979561fa2d69d55e0124e37c663304d";
+            
+            $("#display_error").hide();
+
+            if (query === "" || query === null || typeof query === "undefined")
+            {
+                
+                $("#display_error").text("*Please Enter a Movie name");
+                $("#display_error").show();
+            }
+
+            $.ajax({
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
+				url: "http://api.themoviedb.org/3/search/movie?api_key="+ apikey + "&query=" + query,
+                dataType: "jsonp",
+                //data: { apikey: "33j424u44fyb857r2abt3938", q: query },
+                success: function (response) {
+                    console.log(response);
+                    //Storing the data in the variable
+                    var movies = response.results;
+
+                    var length = movies.length;
+                    var display_noMovies = "Your search did not match any Movies. Please try again."
+
+                    var table = $(".wam-results");
+                    table.empty();
+
+                    if (length === 0) {
+                        $("#display_error").text(display_noMovies);
+                        $("#display_error").show();
+                    }
+
+                    for (var i in movies) {
+
+                        //Storing information of each movie in the variable
+                        var movie = movies[i];
+                        
+                        //Parsing the data
+                        var id = movie.id;
+                        var title = movie.title;
+                        var year = movie.release_date;
+                        var thumb = movie.poster_path;
+                        var audience = movie.popularity;
+                        var critics = movie.vote_average;
+                        var runtime = "100";
+						var base_url = "http://image.tmdb.org/t/p/w300";
+                        
+                        if (runtime == "")
+                        { runtime = "Not Available"; }
+
+                        if (year == "")
+                        { year = "Not Available"; }
+
+                        if (audience == "")
+                        { audience = "Not Available"; }
+
+                        if (critics == "")
+                        { critics = "Not Available"; }
+
+                        //Encapsulating the data
+                        var tr = $("<tr>");
+
+                        var image = "<img src=" + base_url + thumb + " width =" + 100 + " height = " + 150 + " title ='" + title + "' alt ='" + title + "'hspace= 20>";
+                        var td = $("<td>");
+                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                        td = $("<td>");
+                        td.append(display_image);
+                        tr.append(td);
+
+
+                        var td = $("<td>");
+                        var display_title = " <a target='_blank' href=MovieInformation.html?id=" + id + ">" + title + "</a>";
+                        td.append(display_title);
+                        tr.append(td);
+
+                        td = $("<td>");
+                        td.append(audience);
+                        tr.append(td);
+
+                        td = $("<td>");
+                        td.append(critics);
+                        tr.append(td);
+
+                        td = $("<td>");
+                        td.append(year);
+                        tr.append(td);
+
+                        td = $("<td>");
+                        td.append(runtime);
+                        tr.append(td);
+
+                        //Displaying the data
+                        table.append(tr);
+                    }
+                }
+            });
+        }
+
+      </script>
+
+</head>
+<body>
+    <div class="main_div">
+
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+                
+            </div>
+        </div>
+        
+
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a href="../../story/index.htm?../Project/Documentation/story.txt" target="_blank">Documentation</a></li>
+                </ul>
+         </div>
+
+        <div class="input-group">
+            <div class="input_wrapper">
+                
+                <p class="searchbar">
+                    Enter the name of the movie : 
+                    <input type="text" id="usersSearch" class="moviename" placeholder="Search For Any Movie"/>
+                    <span class="input-group-btn">
+                        <button class="luck" type="button">Search</button>
+                    </span>
+                </p>
+                <div class="display-none" id="display_error"></div>
+             </div>
+               
+         </div>
+
+        <div class="results_wrapper">
+         <div class="table_wrapper">
+            <h3>Search Results:</h3>
+            <table class="bgtable">
+                    <thead>
+                        <tr>
+                            <th>Poster</th>
+                            <th>Title (Click for details)</th>
+                            <th>Audience Score</th>
+                            <th>Critics Score</th>  
+                            <th>Release Date</th>
+                            <th>Runtime</th>
+                        </tr>
+                    </thead>
+                    <tbody class="wam-results">
+                        <!--Displaying the data in here-->
+                    </tbody>
+                </table>
+            </div>
+           </div>
+
+        <div class="footer">
+                <p id="footer_text">
+                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                </p>
+            </div>
+
+      </div>
+ 
+</body>
+</html>

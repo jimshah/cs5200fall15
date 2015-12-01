@@ -1,0 +1,393 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Compare Movies</title>
+
+    <link rel="stylesheet" type="text/css" href="../project_css/CompareStyle.css" />
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script>
+
+    $(function () {
+            $(".luck").click(DetailsofMovie1);
+    });
+
+    $(function () {
+        //On pressing enter the function searchMovies is called
+        $('.moviename1').keypress(function (e) {
+            if (e.which == 13) {//Enter key pressed
+                DetailsofMovie1();//Trigger search button click event
+            }
+        });
+    });
+
+    $(function () {
+        //On pressing enter the function searchMovies is called
+        $('.moviename2').keypress(function (e) {
+            if (e.which == 13) {//Enter key pressed
+                DetailsofMovie1();//Trigger search button click event
+            }
+        });
+    });
+
+    function DetailsofMovie1() {
+
+        //I have reffered to Professor Jose Annunziato's Experiment and modified the code to suit my needs
+        //Extracting the data from the first text box
+        var query = $(".moviename1").val();
+        var query1 = $(".moviename2").val();
+		
+		var apikey = "6979561fa2d69d55e0124e37c663304d";
+
+        $("#display_error").hide();
+
+        if (query === "" || query === null || typeof query === "undefined" || query1 === "" || query1 === null || typeof query1 === "undefined")
+        {
+            //alert("Please Enter the name of movies");
+            $("#display_error").text("*Please Enter the name of movies in both the fields");
+            $("#display_error").show();
+            return;
+        }
+
+            
+
+            $.ajax({
+                //The call to the API
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
+				url: "http://api.themoviedb.org/3/search/movie?api_key="+ apikey + "&query=" + query,
+                dataType: "jsonp",
+                //data: { apikey: "33j424u44fyb857r2abt3938", q: query },
+                success: function (response) {
+                    console.log(response);
+                    var movies = response.results;
+                    var table = $(".wam-results");
+                    table.empty();
+                    
+                    //I am only taking the first movie from the data I receive from the API
+                    var movie = movies[0];
+                    var length = movie.length;
+
+                    //Parsing the data
+                    
+                        var id = movie.id; 
+                        var title = movie.title;
+                        var year = movie.release_date;
+                        var thumb = movie.poster_path;
+                        var audience = movie.popularity;
+                        var critics = movie.vote_average;
+                        var runtime = "100";
+                        var review = movie.overview;
+                        var mpaa = "R";
+                        var release_dvd = "100";
+                        var release_theater = "100";
+                        var base_url = "http://image.tmdb.org/t/p/w300";
+                        
+                        if (runtime == "")
+                        { runtime = "Not Available"; }
+
+                        if (year == "")
+                        { year = "Not Available"; }
+
+                        if (audience == "")
+                        { audience = "Not Available"; }
+
+                        if (critics == "")
+                        { critics = "Not Available"; }
+                        
+                        if (review == "")
+                        { review = "Not Available"; }
+
+                        if (mpaa == "")
+                        { mpaa = "Not Available"; }
+
+                        if (release_dvd === undefined)
+                        { release_dvd = "Not Available"; }
+
+                        if (release_theater === undefined)
+                        { release_theater = "Not Available"; }
+
+                    //Encapsulating the data in a table
+                        var tr1 = $("<tr id='title'><td>Title (Click For Details)</td>");
+                        var tr2 = $("<tr id='AudienceRating'><td>Audience Rating</td>");
+                        var tr3 = $("<tr id='CriticsRating'><td>Critics Rating</td>");
+                        var tr4 = $("<tr id='Runtime'><td>Runtime</td>");
+                        var tr5 = $("<tr id='Year'><td>Year</td>");
+                        var tr6 = $("<tr id='Poster'><td>Movie Poster</td>");
+                        var tr7 = $("<tr id='Review'><td>Critics Review</td>");
+                        var tr8 = $("<tr id='mpaa'><td>Mpaa Rating</td>");
+                        var tr9 = $("<tr id='dvd'><td>On DVDs</td>");
+                        var tr10 = $("<tr id='theater'><td>In Theaters</td>");
+
+                    //var image = "<img src=" + thumb + " width = 150" + "height = 200 title ='" + title + "' alt ='" + title + "' hspace= 20>";
+                        var image = "<img src=" + base_url + thumb + " width =" + 150 + " height = " + 200 + " title ='" + title + "' alt ='" + title + "'hspace= 20>";
+                        var td = $("<td>");
+                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                        td = $("<td>");
+                        td.append(display_image);
+                        tr6.append(td);
+
+
+                        var td = $("<td>");
+                        var display_title = " <a target='_blank' href=MovieInformation.html?id="+ id +">" + title + "</a>";
+                        td.append(display_title);
+                        tr1.append(td);
+
+                        td = $("<td>");
+                        td.append(audience);
+                        tr2.append(td);
+
+                        td = $("<td>");
+                        td.append(critics);
+                        tr3.append(td);
+
+                        td = $("<td>");
+                        td.append(year);
+                        tr5.append(td);
+
+                        td = $("<td>");
+                        td.append(runtime);
+                        tr4.append(td);
+
+                        td = $("<td>");
+                        td.append(review);
+                        tr7.append(td);
+
+                        td = $("<td>");
+                        td.append(mpaa);
+                        tr8.append(td);
+
+                        td = $("<td>");
+                        td.append(release_dvd);
+                        tr9.append(td);
+
+                        td = $("<td>");
+                        td.append(release_theater);
+                        tr10.append(td);
+
+                    //Displaying the data in the table
+                        table.append(tr6);
+                        table.append(tr1);
+                        table.append(tr2);
+                        table.append(tr3);
+                        table.append(tr4);
+                        table.append(tr5);
+                    //I also extracted the critics review of the movie but I am not displaying it.
+                        //table.append(tr7);
+                        table.append(tr8);
+                        table.append(tr9);
+                        table.append(tr10);
+
+                        //Calling the function which will display details of the second movie
+                        DetailsofMovie2();
+                    }
+                
+            });
+        }
+
+    function DetailsofMovie2() {
+        //Extracting the movie information from the second text box.
+            var query = $(".moviename2").val();
+			
+			var apikey = "6979561fa2d69d55e0124e37c663304d";
+
+            $.ajax({
+                //The API call
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
+				url: "http://api.themoviedb.org/3/search/movie?api_key="+ apikey + "&query=" + query,
+                dataType: "jsonp",
+                //data: { apikey: "33j424u44fyb857r2abt3938", q: query },
+                success: function (response) {
+                    console.log(response);
+                    var movies = response.results;
+                    var table = $(".wam-results");
+
+                    //Taking the firt movie from the data I receive
+                    var movie = movies[0];
+
+                    //Parsing the data
+						var id = movie.id; 
+                        var title = movie.title;
+                        var year = movie.release_date;
+                        var thumb = movie.poster_path;
+                        var audience = movie.popularity;
+                        var critics = movie.vote_average;
+                        var runtime = "100";
+                        var review = movie.overview;
+                        var mpaa = "R";
+                        var release_dvd = "100";
+                        var release_theater = "100";
+                        var base_url = "http://image.tmdb.org/t/p/w300";
+
+                    
+
+                    if (runtime == "")
+                    { runtime = "Not Available"; }
+
+                    if (year == "")
+                    { year = "Not Available"; }
+
+                    if (audience == "")
+                    { audience = "Not Available"; }
+
+                    if (critics == "")
+                    { critics = "Not Available"; }
+
+                    if (review == "")
+                    { review = "Not Available"; }
+
+                    if (mpaa == "")
+                    { mpaa = "Not Available"; }
+
+                    if (release_dvd === undefined)
+                    { release_dvd = "Not Available"; }
+
+                    if (release_theater === undefined)
+                    { release_theater = "Not Available"; }
+
+                    //Using the id to append the data in the same row
+                    var tr1 = $("#title");
+                    var tr2 = $("#AudienceRating");
+                    var tr3 = $("#CriticsRating");
+                    var tr4 = $("#Runtime");
+                    var tr5 = $("#Year");
+                    var tr6 = $("#Poster");
+                    var tr7 = $("#Review");
+                    var tr8 = $("#mpaa");
+                    var tr9 = $("#dvd");
+                    var tr10 = $("#theater");
+
+                    //var image = "<img src=" + thumb + " width = 150" + "height = 200 title ='" + title + "' alt ='" + title + "' hspace= 20>";
+                    var image = "<img src=" + base_url + thumb + " width =" + 150 + " height = " + 200 + " title ='" + title + "' alt ='" + title + "'hspace= 20>";
+                    var td = $("<td>");
+                    var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                    td = $("<td>");
+                    td.append(display_image);
+                    tr6.append(td);
+
+
+                    var td = $("<td>");
+                    var display_title = " <a target='_blank' href=MovieInformation.html?id=" + id + ">" + title + "</a>";
+                    td.append(display_title);
+                    tr1.append(td);
+
+                    td = $("<td>");
+                    td.append(audience);
+                    tr2.append(td);
+
+                    td = $("<td>");
+                    td.append(critics);
+                    tr3.append(td);
+
+                    td = $("<td>");
+                    td.append(year);
+                    tr5.append(td);
+
+                    td = $("<td>");
+                    td.append(runtime);
+                    tr4.append(td);
+
+                    td = $("<td>");
+                    td.append(review);
+                    tr7.append(td);
+
+                    td = $("<td>");
+                    td.append(mpaa);
+                    tr8.append(td);
+
+                    td = $("<td>");
+                    td.append(release_dvd);
+                    tr9.append(td);
+
+                    td = $("<td>");
+                    td.append(release_theater);
+                    tr10.append(td);
+
+                    //Displaying the encapsulated data
+                    table.append(tr6);
+                    table.append(tr1);
+                    table.append(tr2);
+                    table.append(tr3);
+                    table.append(tr4);
+                    table.append(tr5);
+                    //table.append(tr7);
+                    table.append(tr8);
+                    table.append(tr9);
+                    table.append(tr10);
+                    
+                }
+
+            });
+        }
+
+</script>
+
+</head>
+<body>
+    <div class="main_div">
+
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+            </div>
+        </div>
+        
+
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a href="../../story/index.htm?../Project/Documentation/story.txt" target="_blank">Documentation</a></li>
+                </ul>
+         </div>
+
+        <div class="input-group">
+            <div class="input_wrapper">
+                <!--Taking the input from the user-->
+                <p>
+                  <input type="text" class="moviename1" placeholder="Select First Movie"/>
+
+                  <input type="text" class="moviename2" placeholder="Select Second Movie"/>
+
+                  <span class="input-group-btn">
+                        <button class="luck" type="button">Compare</button>
+                  </span>
+                 </p>
+                <div class="display-none" id="display_error"></div>
+             </div>
+         </div>
+
+        <div class="results_wrapper">
+         <div class="table_wrapper">
+            <h3>Results:</h3>
+            <table class="bgtable">
+                   
+                    <tbody class="wam-results">
+                       <!--The area where the results are displayed-->
+                    </tbody>
+                </table>
+            </div>
+           </div>
+
+        <div class="footer">
+                <p id="footer_text">
+                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                </p>
+            </div>
+
+      </div>
+</body>
+</html>

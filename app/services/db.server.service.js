@@ -6,7 +6,7 @@ var self;
 function DbServerService() {
 	self = this;
 	//this.SesService = new (require('../../../services/ses.js')(sesConfig, dbConfig))();
-	self.MySqlService = new (require("../../services/mysql.js")("sakila"))();
+	self.MySqlService = new (require("../../services/mysql.js")("movie"))();
 	self.mysql = self.MySqlService.getConnection();
 	//console.log("self.mysql", self.mysql);
 };
@@ -20,14 +20,26 @@ var api = {
 
 module.exports = function(){
 
-	DbServerService.prototype.getTables = function(req, res, next) {
+	DbServerService.prototype.getMovieById = function(req, res, next) {
 		//console.log("self", self);
 		//console.log("self.prototype", self.prototype);
 		try {
+			var movieId = req.params.movieId || "";
 			return new Promise(function(resolve, reject){
-				self.executeQuery("show tables")
-				.then(function(responseData){
-					res.status(200).send(responseData);
+				self.executeQuery("select * from movies where id="+movieId)
+				.then(function(responseMovie){
+					if (!responseMovie){
+						res.status(404).send({error: "Not Found"});
+					} else if (responseMovie.constructor === Array){
+						if (responseMovie[0]){
+							res.status(200).send(responseMovie[0]);
+						} else {
+							res.status(404).send({error: "Not Found"});
+						}
+					} else {
+						// Control shouldn't come here 
+						res.status(200).send(responseMovie);
+					}
 				})
 				.catch(function(error){
 					res.status(400).send({error: error});
@@ -38,13 +50,91 @@ module.exports = function(){
 		}
 	};
 
-	DbServerService.prototype.getMovieById = function(req, res, next) {
+	DbServerService.prototype.getPopularMovies = function(req, res, next) {
+		try {
+			//var movieId = req.params.movieId || "";
+			return new Promise(function(resolve, reject){
+				self.executeQuery("select * from popular")
+				.then(function(popularMovies){
+					res.status(200).send(popularMovies);
+				})
+				.catch(function(error){
+					res.status(400).send({error: error});
+				});
+			});
+		} catch(error){
+			res.status(400).send({error: error});
+		}
+	};
+
+	DbServerService.prototype.getUpcomingMovies = function(req, res, next) {
+		try {
+			//var movieId = req.params.movieId || "";
+			return new Promise(function(resolve, reject){
+				self.executeQuery("select * from upcoming")
+				.then(function(upcomingMovies){
+					res.status(200).send(upcomingMovies);
+				})
+				.catch(function(error){
+					res.status(400).send({error: error});
+				});
+			});
+		} catch(error){
+			res.status(400).send({error: error});
+		}
+	};
+
+	DbServerService.prototype.getTheatreMovies = function(req, res, next) {
+		try {
+			//var movieId = req.params.movieId || "";
+			return new Promise(function(resolve, reject){
+				self.executeQuery("select * from theatre")
+				.then(function(theatreMovies){
+					res.status(200).send(theatreMovies);
+				})
+				.catch(function(error){
+					res.status(400).send({error: error});
+				});
+			});
+		} catch(error){
+			res.status(400).send({error: error});
+		}
+	};
+
+	DbServerService.prototype.getCategories = function(req, res, next) {
+		try {
+			var options = {
+				host: "api.themoviedb.org",
+				path: "/3/genre/movie/list?api_key="+api.config.appKey,
+				method: 'GET'
+			};
+			console.log("options are ", options);
+			return getRequest(options)
+			.then(function(responseData){
+				res.status(200).send(responseData);
+			})
+			.catch(function(error){
+				res.status(400).send({error: error});
+			})
+		} catch(error){
+			res.status(400).send({error: error});
+		}
+	};
+
+
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+
+	DbServerService.prototype.getTables = function(req, res, next) {
 		//console.log("self", self);
 		//console.log("self.prototype", self.prototype);
 		try {
-			var movieId = req.params.movieId || "";
 			return new Promise(function(resolve, reject){
-				self.executeQuery("select * from film where film_id="+movieId)
+				self.executeQuery("show tables")
 				.then(function(responseData){
 					res.status(200).send(responseData);
 				})
@@ -99,24 +189,7 @@ module.exports = function(){
 	};
 
 
-	DbServerService.prototype.getCategories = function(req, res, next) {
-		try {
-			var options = {
-				host: "api.themoviedb.org",
-				path: "/3/genre/movie/list?api_key="+api.config.appKey,
-				method: 'GET'
-			};
-			return getRequest(options)
-			.then(function(responseData){
-				res.status(200).send(responseData);
-			})
-			.catch(function(error){
-				res.status(400).send({error: error});
-			})
-		} catch(error){
-			res.status(400).send({error: error});
-		}
-	};
+	
 
 	DbServerService.prototype.getCategoryEvents = function(req, res, next) {
 		var self = this, category = req.params.category;

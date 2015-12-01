@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>On DVDs</title>
+    <link rel="stylesheet" type="text/css" href="../project_css/OnDvd.css" />
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+    content="initial-scale=1, minimum-scale=1"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+
+        //var apikey = "33j424u44fyb857r2abt3938";
+		
+          var apikey = "6979561fa2d69d55e0124e37c663304d";
+		  
+        // calls all the functions in the order written below
+        onload = function loadImages() {
+            loadTopRentals();
+            loadCurrentReleases();
+            loadNewReleases();
+            loadUpcomingDvds();
+        }
+
+        function loadTopRentals() {
+
+            $.ajax({
+                //Making the API call
+				url: "http://api.themoviedb.org/3/movie/top_rated?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+                    //Storing the data in the variable
+                    var movies = response.results;
+                    var imagesoftoprentals = $(".displaytoprentals");
+                    imagesoftoprentals.empty();
+					var base_url = "http://image.tmdb.org/t/p/w300";
+
+                    for (var i = 0; i < 5; i++) {
+
+                        //Storing the data of each movie in the variable
+                        var movie = movies[i];
+                        
+                        //Parsing the data
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var space = " ";
+                        var title = movie.title;
+                        
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+
+                        //Displaying the data
+                        imagesoftoprentals.append(display_image);
+                        imagesoftoprentals.append(space);
+
+                    }
+                }
+            });
+        }
+
+        function loadCurrentReleases() {
+
+            $.ajax({
+				url: "http://api.themoviedb.org/3/movie/now_playing?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/current_releases.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+                    var movies = response.results;
+                    var imagesofcurrentreleases = $(".currentreleases");
+                    imagesofcurrentreleases.empty();
+					var base_url = "http://image.tmdb.org/t/p/w300";
+					
+                    for (var i = 0; i < 5; i++) {
+                        var movie = movies[i];
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var space = " ";
+                        var title = movie.title;
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+
+                        imagesofcurrentreleases.append(display_image);
+                        imagesofcurrentreleases.append(space);
+
+                    }
+                }
+            });
+        }
+
+        function loadNewReleases() {
+
+            $.ajax({
+				url: "http://api.themoviedb.org/3/movie/popular?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+                    var movies = response.results;
+                    var imagesofnewreleases = $(".newreleases");
+                    imagesofnewreleases.empty();
+					var base_url = "http://image.tmdb.org/t/p/w300";
+					
+                    for (var i = 0; i < 5; i++) {
+					
+                        var movie = movies[i];
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var space = " ";
+                        var title = movie.title;
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+
+                        imagesofnewreleases.append(display_image);
+                        imagesofnewreleases.append(space);
+
+                    }
+                }
+            });
+        }
+
+        function loadUpcomingDvds() {
+
+            $.ajax({
+				url: "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey,
+                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?" + "&apikey=" + apikey,
+                dataType: "jsonp",
+                success: function (response) {
+                    console.log(response);
+                    if (typeof callback === "function")
+                        callback(response);
+                    var movies = response.results;
+                    var imagesofupcomingdvds = $(".upcomingdvds");
+                    imagesofupcomingdvds.empty();
+					var base_url = "http://image.tmdb.org/t/p/w300";
+					
+                    for (var i = 0; i < 5; i++) {
+                        var movie = movies[i];
+                        var thumb = movie.poster_path;
+                        var id = movie.id;
+                        var space = " ";
+                        var title = movie.title;
+                        var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
+                        var display_image = "<a href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+
+                        imagesofupcomingdvds.append(display_image);
+                        imagesofupcomingdvds.append(space);
+
+                    }
+                }
+            });
+        }
+
+        </script>
+</head>
+<body>
+    <div class="main_div">
+        <div class="main_header">
+            <div class="header">
+                <p id="heading">Welcome to... MovieCentral</p>
+                <p id="tagline">Which Movie will you watch next?</p>
+            </div>
+            <div class="camerareel">
+                <img id="height" src="../../images/camerareel.jpg" />
+            </div>
+        </div>
+        
+        <div class="masterNavigation">
+                <ul class="master_navigation">
+                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="Search.html">Search</a></li>
+                    <li><a href="OnDvd.html">On DVDs</a></li>
+                    <li><a href="Compare.html">Compare Movies</a></li>
+                    <li><a href="ContactMe.html">Contact Me</a></li>
+                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a href="../../story/index.htm?../Project/Documentation/story.txt" target="_blank">Documentation</a></li>
+                </ul>
+            </div>
+
+        <div class="Top_rentals">
+            <h3>Top Rentals:&nbsp;&nbsp;
+               <a href="TopRentals.html">(See All)</a> </h3>
+            <div class="displaytoprentals">
+                <!--Displaying top rented movies on Dvd-->
+            </div>
+        </div>
+
+        <div class="Current_Releases">
+            <h3>Current Releases:&nbsp;&nbsp;
+               <a href="CurrentReleases.html">(See All)</a> </h3>
+            <div class="currentreleases">
+                <!--Displaying currently released movies on Dvd-->
+            </div>
+        </div>
+
+        <div class="New_Releases">
+            <h3>New Releases:&nbsp;&nbsp;
+               <a href="NewReleases.html">(See All)</a> </h3>
+            <div class="newreleases">
+                <!--Displaying newly released movies on Dvd-->
+            </div>
+        </div>
+
+        <div class="Upcoming_Dvds">
+            <h3>Upcoming Dvds:&nbsp;&nbsp;
+               <a href="UpcomingDvds.html">(See All)</a> </h3>
+            <div class="upcomingdvds">
+                <!--Displaying upcoming movies on Dvd-->
+            </div>
+        </div>
+
+        <div class="footer">
+                <p id="footer_text">
+                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                </p>
+            </div>
+
+    </div>
+</body>
+</html>

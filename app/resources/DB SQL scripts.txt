@@ -55,6 +55,14 @@ create table Upcoming (
     release_date date not null
 );
 
+create table Genre (
+    movie_id int not null unique,
+	foreign key(movie_id) references movies(id) on delete cascade on update cascade,
+	genre_id int not null,
+	genre_name varchar(100),
+	primary key(movie_id, genre_id)
+);
+
 #person is a generalized class of actor, director and producer
  create table person (
 	id int primary key,
