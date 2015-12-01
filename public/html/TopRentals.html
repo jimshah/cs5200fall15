@@ -3,7 +3,7 @@
 <head>
     <title>Top Rentals</title>
 
-    <link rel="stylesheet" type="text/css" href="../project_css/TopRentals.css" />
+    <link rel="stylesheet" type="text/css" href="../css/TopRentals.css" />
 
     <meta charset="utf-8" />
 
@@ -25,13 +25,11 @@
         function loadTopRentals() {
 
             $.ajax({
-				url: "http://api.themoviedb.org/3/movie/top_rated?api_key=" + apikey,
-                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+				url: "/db/dvd/current",
                 success: function (response) {
                     console.log(response);
                     //Storing the response in the variable
-                    var movies = response.results;
+                    var movies = response;
                     var table = $(".wam-results");
                     table.empty();
                     
@@ -110,19 +108,19 @@
                 <p id="tagline">Which Movie will you watch next?</p>
             </div>
             <div class="camerareel">
-                <img id="height" src="../../images/camerareel.jpg" />
+                <img id="height" src="../camerareel.jpg" />
             </div>
         </div>
         
         <div class="masterNavigation">
                 <ul class="master_navigation">
-                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="../index.html">Home</a></li>
                     <li><a href="Search.html">Search</a></li>
                     <li><a href="OnDvd.html">On DVDs</a></li>
                     <li><a href="Compare.html">Compare Movies</a></li>
                     <li><a href="ContactMe.html">Contact Me</a></li>
                     <li><a href="SiteMap.html">Site Map</a></li>
-                    <li><a href="../../story/index.htm?../Project/Documentation/story.txt" target="_blank">Documentation</a></li>
+                    <li><a href="../index.html" target="_blank">Documentation</a></li>
                 </ul>
          </div>
         <div class="toprentals">

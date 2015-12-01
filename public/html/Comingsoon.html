@@ -3,7 +3,7 @@
 <head>
     <title>Coming Soon</title>
 
-    <link rel="stylesheet" type="text/css" href="../project_css/Comingsoon.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Comingsoon.css" />
 
     <meta charset="utf-8" />
 
@@ -27,12 +27,10 @@
 
             $.ajax({
                 //The call to the API
-				url: "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey,
-                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+				url: "/db/upcoming/movie",
                 success: function (response) {
                     console.log(response);
-                    var movies = response.results;
+                    var movies = response;
                     //I have reffered to Professor Jose Annunziato's Experiment and modified the code to suit my needs
                     var table = $(".wam-results");
                     table.empty();
@@ -113,13 +111,13 @@
                 <p id="tagline">Which Movie will you watch next?</p>
             </div>
             <div class="camerareel">
-                <img id="height" src="../../images/camerareel.jpg" />
+                <img id="height" src="../camerareel.jpg" />
             </div>
         </div>
         
         <div class="masterNavigation">
                 <ul class="master_navigation">
-                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="../index.html">Home</a></li>
                     <li><a href="Search.html">Search</a></li>
                     <li><a href="OnDvd.html">On DVDs</a></li>
                     <li><a href="Compare.html">Compare Movies</a></li>

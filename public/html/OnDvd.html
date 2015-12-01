@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>On DVDs</title>
-    <link rel="stylesheet" type="text/css" href="../project_css/OnDvd.css" />
+    <link rel="stylesheet" type="text/css" href="../css/OnDvd.css" />
 
     <meta charset="utf-8" />
 
@@ -29,15 +29,13 @@
 
             $.ajax({
                 //Making the API call
-				url: "http://api.themoviedb.org/3/movie/top_rated?api_key=" + apikey,
-                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+				url: "/db/dvd/current",
                 success: function (response) {
                     console.log(response);
                     if (typeof callback === "function")
                         callback(response);
                     //Storing the data in the variable
-                    var movies = response.results;
+                    var movies = response;
                     var imagesoftoprentals = $(".displaytoprentals");
                     imagesoftoprentals.empty();
 					var base_url = "http://image.tmdb.org/t/p/w300";
@@ -68,14 +66,12 @@
         function loadCurrentReleases() {
 
             $.ajax({
-				url: "http://api.themoviedb.org/3/movie/now_playing?api_key=" + apikey,
-                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/current_releases.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+				url: "/db/dvd/current",
                 success: function (response) {
                     console.log(response);
                     if (typeof callback === "function")
                         callback(response);
-                    var movies = response.results;
+                    var movies = response;
                     var imagesofcurrentreleases = $(".currentreleases");
                     imagesofcurrentreleases.empty();
 					var base_url = "http://image.tmdb.org/t/p/w300";
@@ -133,14 +129,12 @@
         function loadUpcomingDvds() {
 
             $.ajax({
-				url: "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey,
-                //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+				url: "/db/dvd/upcoming",
                 success: function (response) {
                     console.log(response);
                     if (typeof callback === "function")
                         callback(response);
-                    var movies = response.results;
+                    var movies = response;
                     var imagesofupcomingdvds = $(".upcomingdvds");
                     imagesofupcomingdvds.empty();
 					var base_url = "http://image.tmdb.org/t/p/w300";
@@ -172,13 +166,13 @@
                 <p id="tagline">Which Movie will you watch next?</p>
             </div>
             <div class="camerareel">
-                <img id="height" src="../../images/camerareel.jpg" />
+                <img id="height" src="../camerareel.jpg" />
             </div>
         </div>
         
         <div class="masterNavigation">
                 <ul class="master_navigation">
-                    <li><a href="Default.html">Home</a></li>
+                    <li><a href="../index.html">Home</a></li>
                     <li><a href="Search.html">Search</a></li>
                     <li><a href="OnDvd.html">On DVDs</a></li>
                     <li><a href="Compare.html">Compare Movies</a></li>
@@ -222,7 +216,7 @@
 
         <div class="footer">
                 <p id="footer_text">
-                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                    Copyright &copy; 2015 Darshit Saraiya | Deepanjan Das | Dhanashri Damankar | Jainam Shah | All Rights Reserved  
                 </p>
             </div>
 

@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>MovieCentral</title>
-    <link rel="stylesheet" type="text/css" href="../project_css/homestyle.css" />
+    <link rel="stylesheet" type="text/css" href="css/homestyle.css" />
 
     <meta charset="utf-8" />
 
@@ -29,16 +29,16 @@
 
             $.ajax({
                 //The API call
-				url: "http://api.themoviedb.org/3/movie/now_playing?api_key=" + apikey,
+				url: "/db/theatre/movie",
                 //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+                //dataType: "jsonp",
                 success: function (response) {
-                    console.log(response);
+                    console.log("response", response);
                     if (typeof callback === "function")
                         callback(response);
 
                     //Storing the data in a variable
-                    var movies = response.results;
+                    var movies = response;
                     var imagesofintheatres = $(".intheatres");
                     imagesofintheatres.empty();
 
@@ -55,7 +55,7 @@
 
                         //Encapsulating the data to display
                         var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
-                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                        var display_image = "<a target='_blank' href=html/MovieInformation.html?id=" + id + ">" + image + "</a>";
 
                         //Displaying the data
                         imagesofintheatres.append(display_image);
@@ -68,14 +68,14 @@
         function loadPopularMovies() {
 
             $.ajax({
-				url: "http://api.themoviedb.org/3/movie/popular?api_key=" + apikey,
+				url: "/db/popular/movie",
                 //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
+                //dataType: "jsonp",
                 success: function (response) {
                     console.log(response);
                     if (typeof callback === "function")
                         callback(response);
-                    var movies = response.results;
+                    var movies = response;
                     var imagesofpopularmovies = $(".displaypopular");
                     imagesofpopularmovies.empty();
                     for (var i = 0; i < 5; i++) {
@@ -88,7 +88,7 @@
 						var base_url = "http://image.tmdb.org/t/p/w300";
 						
                         var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
-                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                        var display_image = "<a target='_blank' href=html/MovieInformation.html?id=" + id + ">" + image + "</a>";
 
                         imagesofpopularmovies.append(display_image);
                         imagesofpopularmovies.append(space);
@@ -100,14 +100,13 @@
         function loadComingSoonMovies() {
 
             $.ajax({
-				url: "http://api.themoviedb.org/3/movie/upcoming?api_key=" + apikey,
+				url: "/db/upcoming/movie",
                 //url: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?" + "&apikey=" + apikey,
-                dataType: "jsonp",
                 success: function (response) {
                     console.log(response);
                     if (typeof callback === "function")
                         callback(response);
-                    var movies = response.results;
+                    var movies = response;
                     var imagesofupcomingmovies = $(".comingsoon");
                     imagesofupcomingmovies.empty();
 					
@@ -121,7 +120,7 @@
 						var base_url = "http://image.tmdb.org/t/p/w300";
 						
                         var image = "<img src=" + base_url + thumb + " width =" + 200 + " height = " + 275 + " title ='" + title + "' alt ='" + title + "'>";
-                        var display_image = "<a target='_blank' href=MovieInformation.html?id=" + id + ">" + image + "</a>";
+                        var display_image = "<a target='_blank' href=html/MovieInformation.html?id=" + id + ">" + image + "</a>";
                        
                         imagesofupcomingmovies.append(display_image);
                         imagesofupcomingmovies.append(space);
@@ -147,25 +146,25 @@
                 <p id="tagline">Which Movie will you watch next?</p>
             </div>
             <div class="camerareel">
-                <img id="height" src="../../images/camerareel.jpg" />
+                <img id="height" src="camerareel.jpg" />
             </div>
         </div>
         
         <div class="masterNavigation">
                 <ul class="master_navigation">
-                    <li><a href="Default.html">Home</a></li>
-                    <li><a href="Search.html">Search</a></li>
-                    <li><a href="OnDvd.html">On DVDs</a></li>
-                    <li><a href="Compare.html">Compare Movies</a></li>
-                    <li><a href="ContactMe.html">Contact Me</a></li>
-                    <li><a href="SiteMap.html">Site Map</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="html/Search.html">Search</a></li>
+                    <li><a href="html/OnDvd.html">On DVDs</a></li>
+                    <li><a href="html/Compare.html">Compare Movies</a></li>
+                    <li><a href="html/ContactMe.html">Contact Me</a></li>
+                    <li><a href="html/SiteMap.html">Site Map</a></li>
                     <li><a target="_blank" href="../../story/index.htm?../Project/Documentation/story.txt">Documentation</a></li>
                 </ul>
             </div>
 
         <div class="in_theatres">
             <h3>In Theatres: &nbsp;&nbsp;
-               <a href="Intheatres.html" target="_blank">(See All)</a>
+               <a href="html/Intheatres.html" target="_blank">(See All)</a>
                 
             </h3>
             <div class="intheatres">
@@ -176,7 +175,7 @@
 
         <div class="Popular_Movies">
             <h3>Popular Movies:&nbsp;&nbsp;
-               <a href="PopularMovies.html" target="_blank">(See All)</a> </h3>
+               <a href="html/PopularMovies.html" target="_blank">(See All)</a> </h3>
             <div class="displaypopular">
                 <!--The area where popular movies are displayed-->
             </div>
@@ -184,7 +183,7 @@
 
         <div class="Coming_Soon">
             <h3>Coming Soon:&nbsp;&nbsp;
-               <a href="Comingsoon.html" target="_blank">(See All)</a> </h3>
+               <a href="html/Comingsoon.html" target="_blank">(See All)</a> </h3>
             <div class="comingsoon">
                 <!--The area where upcoming movies are displayed-->
             </div>
@@ -192,7 +191,7 @@
 
         <div class="footer">
                 <p id="footer_text">
-                    Copyright &copy; 2014 Darshit Saraiya | All Rights Reserved  
+                    Copyright &copy; 2015 Darshit Saraiya | Deepanjan Das | Dhanashri Damankar | Jainam Shah | All Rights Reserved  
                 </p>
             </div>
 

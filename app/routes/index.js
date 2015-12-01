@@ -18,6 +18,7 @@ module.exports = function(app) {
 
 	app.route("/db/dvd/upcoming").get(dbController.getTheatreMovies);
 	app.route("/db/dvd/current").get(dbController.getPopularMovies);
+	app.route("/db/dvd/toprentals").get(dbController.getPopularMovies);
 	app.route("/db/genre").get(dbController.getCategories);
 	//app.route("/db/genre/:genreId/movie").get(apiController.getMoviesByGenre);
 
